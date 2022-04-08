@@ -1,0 +1,27 @@
+from google.cloud import ndb
+
+
+class User(ndb.Model):
+    email = ndb.StringProperty()
+    password = ndb.StringProperty()
+    role = ndb.StringProperty()
+
+
+class Property(ndb.Model):
+    host_id = ndb.StringProperty()
+    name = ndb.StringProperty()
+    property_type = ndb.StringProperty()
+    address = ndb.StringProperty()
+    description = ndb.StringProperty()
+    date_registered = ndb.DateTimeProperty()
+    location = ndb.StringProperty()
+    price = ndb.IntegerProperty()
+
+
+class Bookings(ndb.Model):
+    booker_id = ndb.StringProperty()
+    property_id = ndb.IntegerProperty()
+    booking_date=ndb.DateTimeProperty()
+    check_in = ndb.DateTimeProperty()
+    check_out = ndb.DateTimeProperty()
+    total_paid=ndb.IntegerProperty()
