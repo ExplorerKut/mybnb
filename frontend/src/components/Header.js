@@ -35,7 +35,7 @@ function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,s
         <div className="header-name">
           <Link to="/" className="link-components"><h1>AirBnB</h1></Link>
         </div>
-        hello
+        
           <Search/>
         <ul className="menu-options">
         {!token&&token!==""&&token!==undefined?
