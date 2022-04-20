@@ -3,6 +3,7 @@ import bcrypt
 from models import User,Property
 from app import client
 from app import jwt
+from google.cloud.ndb._datastore_query import Cursor
 from flask_jwt_extended import (
     create_access_token,
     unset_jwt_cookies,
@@ -59,3 +60,64 @@ def addProperty(data):
         return jsonify(
             [{"status": "error", "message": "Could Not initiate datastore client"}]
         )
+
+@jwt_required()
+def registeredProperty(cursor,limit=5):
+    host_id=get_jwt_identity()
+    with client.context():
+        # previous_cursor
+        cursor = Cursor(urlsafe=cursor)
+        # previous_cursor = cursor.urlsafe()
+        items, next_cursor, more_items = (
+            Property.query(Property.host_id == host_id)
+            .order(Property.date_registered)
+            .fetch_page(limit, start_cursor=cursor)
+        )
+        # print(next_cursor.urlsafe())
+        items1, next_cursor1, more_items1 = (
+            Property.query(Property.host_id == host_id)
+            .order(-Property.date_registered)
+            .fetch_page(limit, start_cursor=cursor)
+        )
+            # print(next_cursor1.urlsafe())
+
+            # items.reverse()
+        next_cursor = None if not next_cursor else next_cursor.urlsafe()
+        next_cursor1 = None if not next_cursor1 else next_cursor1.urlsafe()
+        # previous_cursor = None if not cursor else cursor.urlsafe()
+        if len(items) > 0:
+            send_data = []
+            send_data2 = []
+            for entity in items:
+                # print(entity.key.id)
+                temp = {}
+                temp["date"] = entity.date_registered
+                # temp["booking_id"] = entity.key.id()
+                temp["property_name"] = entity.name
+                temp["property_location"]= entity.location
+                temp["property_id"]= entity.key.id()
+                temp["property_type"]= entity.property_type
+                # temp["check_in"] = entity.check_in
+                # temp["check_out"] = entity.check_out
+                temp["price"] = entity.price
+                send_data.append(temp)
+
+            # send_data = sorted(send_data, key=lambda entity: entity["check_in"])
+            # print("-=======")
+            # print(cursor)
+            return jsonify(
+                {
+                    "status": "success",
+                    "message": "Resource Found",
+                    "data": send_data,
+                    "next_cursor": ""
+                    if not next_cursor
+                    else next_cursor.decode("utf-8"),
+                    "previous_cursor": ""
+                    if not next_cursor1
+                    else next_cursor1.decode("utf-8")
+                    # "previous_cursor": previous_cursor,
+                }
+            )
+        else:
+            return jsonify({"status": "error", "message": "No Property for this user"})

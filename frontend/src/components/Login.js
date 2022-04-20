@@ -66,6 +66,7 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
             setTimeout(()=>{
                 removeToken()
             },60*60*12*1000)
+            window.location.reload()
             // navigate(from,{replace:true})
         }
         else{

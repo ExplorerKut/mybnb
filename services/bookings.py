@@ -1,6 +1,6 @@
 from calendar import c
 from flask import request, jsonify
-from models import Bookings
+from models import Bookings, Property
 from google.cloud.ndb._datastore_query import Cursor
 
 # from google.cloud.ndb
@@ -52,10 +52,13 @@ def getBookings(cursor, nextPage=True, limit=5):
             send_data2 = []
             for entity in items:
                 # print(entity.key.id)
+                property_details=   Property.get_by_id(entity.property_id)
                 temp = {}
                 temp["date"] = entity.booking_date
                 temp["booking_id"] = entity.key.id()
-                temp["property_id"] = entity.property_id
+                temp["property_name"] = property_details.name
+                temp["property_location"]= property_details.location
+                temp["property_id"]= entity.property_id
                 temp["check_in"] = entity.check_in
                 temp["check_out"] = entity.check_out
                 temp["price"] = entity.total_paid

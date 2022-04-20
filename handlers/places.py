@@ -18,6 +18,9 @@ def timeConverter(timezone, current_time):
     return current_time
 
 
+
+
+
 @places.route("/<string:locationName>", methods=["GET"])
 def getPlacesHandler(locationName):
     return getPlaces(locationName)

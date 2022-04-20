@@ -1,6 +1,7 @@
 from flask import request, jsonify
+from requests import get
 import bcrypt
-from models import User, Property, Bookings
+from models import User, Property, Bookings, Favourites
 from app import client
 from app import jwt
 from datetime import datetime
@@ -9,6 +10,7 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
     get_jwt_identity,
     jwt_required,
+    
 )
 
 
@@ -38,51 +40,64 @@ def getAllLocations():
             )
 
     except:
-        
+
         return jsonify(
             [{"status": "error", "message": "Could Not initiate datastore client"}]
         )
 
-
+@jwt_required(optional=True)
 def getPlaces(locationName):
     try:
         with client.context():
-            property_details = Property.query(
-                Property.location == locationName.lower()
-            ).fetch()
-            response_data = []
-
-            if len(property_details) > 0:
-                for entity in property_details:
-                    temp = {}
-                    temp["address"] = entity.address
-                    temp["date_registered"] = entity.date_registered
-                    temp["description"] = entity.description
-                    temp["host_id"] = entity.host_id
-                    temp["name"] = entity.name
-                    temp["property_type"] = entity.property_type
-                    temp["location"] = entity.location
-                    temp["price"] = entity.price
-                    temp["id"] = entity.key.id()
-                    response_data.append(temp)
-                return jsonify(
-                    [
-                        {
-                            "status": "success",
-                            "message": "Location returned",
-                            "response": response_data,
-                        }
-                    ]
-                )
+            if locationName!="":
+                property_details = Property.query(
+                    Property.location == locationName.lower()
+                ).fetch()
+                print(get_jwt_identity())
+                favourites=[]
+                if get_jwt_identity():
+                    favourites=[entity.property_id for entity in Favourites.query(Favourites.user_id==get_jwt_identity()).fetch()]
+                    print(favourites)
+                # else:
+                response_data = []
+                # favourites = Favourites.query()
+                if len(property_details) > 0:
+                    for entity in property_details:
+                        temp = {}
+                        temp["address"] = entity.address
+                        temp["date_registered"] = entity.date_registered
+                        temp["description"] = entity.description
+                        temp["host_id"] = entity.host_id
+                        temp["name"] = entity.name
+                        temp["property_type"] = entity.property_type
+                        temp["location"] = entity.location
+                        temp["price"] = entity.price
+                        temp["id"] = entity.key.id()
+                        temp["favourite"]=False
+                        if get_jwt_identity() and temp["id"] in favourites:
+                            print("here")
+                            temp["favourite"]=True
+                        response_data.append(temp)
+                    return jsonify(
+                        [
+                            {
+                                "status": "success",
+                                "message": "Location returned",
+                                "response": response_data,
+                            }
+                        ]
+                    )
+                else:
+                    return jsonify(
+                        [
+                            {
+                                "status": "fail",
+                                "message": "Location Not Found",
+                            }
+                        ]
+                    )
             else:
-                return jsonify(
-                    [
-                        {
-                            "status": "fail",
-                            "message": "Location Not Found",
-                        }
-                    ]
-                )
+                
     except:
         return jsonify(
             [{"status": "error", "message": "Could Not initiate datastore client"}]
@@ -263,3 +278,69 @@ def bookPlace(data):
     #             }
     #         ]
     #     )
+
+@jwt_required(optional=True)
+def searchLocation(data):
+    try:
+        with client.context():
+            print(data)
+            available_properties = Property.query(
+                Property.location == data.get("location")
+            ).fetch()
+            # print(available_properties)
+            list_property_id = []
+            for entity in available_properties:
+                list_property_id.append(entity.key.id())
+            print(data.get("check_in"))
+            # return jsonify(available_properties)
+            if data.get("check_in") != None or data.get("check_out") != None:
+                available_prop = Bookings.query().fetch()
+                for entity in available_prop:
+                    if (
+                        data.get("check_in") != None
+                        and entity.key.id() in list_property_id
+                        and entity.check_in.timestamp() <= data["check_in"]
+                        and entity.check_out.timestamp() >= data["check_in"]
+                    ):
+                        list_property_id.remove(entity.key.id())
+                    if (
+                        data.get("check_out") != None
+                        and entity.key.id() in list_property_id
+                        and entity.check_in.timestamp() <= data["check_out"]
+                        and entity.check_out.timestamp() >= data["check_out"]
+                    ):
+                        list_property_id.remove(entity.key.id())
+            favourites=[]
+            if get_jwt_identity():
+                favourites=[entity.property_id for entity in Favourites.query(Favourites.user_id==get_jwt_identity()).fetch()]
+                # print(favourites)
+            response = []
+            for entity in available_properties:
+                if entity.key.id() in list_property_id:
+                    temp = {}
+                    temp["address"] = entity.address
+                    temp["date_registered"] = entity.date_registered
+                    temp["description"] = entity.description
+                    temp["host_id"] = entity.host_id
+                    temp["name"] = entity.name
+                    temp["property_type"] = entity.property_type
+                    temp["location"] = entity.location
+                    temp["price"] = entity.price
+                    temp["id"] = entity.key.id()
+                    temp["favourite"]=False
+                    if get_jwt_identity() and temp["id"] in favourites:
+                        print("here")
+                        temp["favourite"]=True
+                    response.append(temp)
+
+            return jsonify(
+                [
+                    {
+                        "status": "success",
+                        "message": "Search Successfull",
+                        "data": response,
+                    }
+                ]
+            )
+    except:
+        return jsonify([{"status": "error", "message": "Error in datastore client"}])

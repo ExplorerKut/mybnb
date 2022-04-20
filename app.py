@@ -11,7 +11,7 @@ from flask_jwt_extended import (
     JWTManager,
 )
 
-from models import User, Property, Bookings
+from models import Favourites, User, Property, Bookings
 import bcrypt
 from datetime import datetime, timedelta
 from google.cloud import ndb
@@ -30,11 +30,13 @@ from handlers.host import host
 from handlers.location import location
 from handlers.places import places
 from handlers.bookings import bookings
+from handlers.favourites import favourites
 
 app.register_blueprint(authenticate, url_prefix="/auth")
 app.register_blueprint(host, url_prefix="/host")
-app.register_blueprint(location, url_prefix="/locations")
+app.register_blueprint(location, url_prefix="/api/locations")
 app.register_blueprint(places, url_prefix="/api/places")
+app.register_blueprint(favourites, url_prefix="/api/favourites")
 app.register_blueprint(bookings, url_prefix="/bookings")
 
 # @app.route("/login", methods=["POST"])

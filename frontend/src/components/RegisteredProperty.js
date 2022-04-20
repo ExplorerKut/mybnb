@@ -1,8 +1,8 @@
 import {useState,useEffect} from "react"
 import {Link} from "react-router-dom"
 import {Puff} from 'react-loader-spinner'
-function Bookings(props){
-    const [mybookings,setBookings]=useState([])
+function RegisteredProperty(props){
+    const [myProperties,setProperty]=useState([])
     const [spinnerLoading,setSpinnerLoading]=useState(true)
     const [cursor,setCursor]= useState({"next":"","previous":""})
     const [popMessage, setMessage ]= useState({
@@ -11,18 +11,16 @@ function Bookings(props){
         "message": "",
     });
     useEffect(async()=>{
-        let response=await fetch("/bookings/",{
+        let response=await fetch("/host/getProperty/",{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
         }).then(response=>{
-            
             return response.json()
         }).then(data=>{
             if (data.status === "success") {
-                setBookings([...data.data])
+                setProperty([...data.data])
                 setCursor({"next":data.next_cursor,"previous":""})
-                // console.log(mybookings.length)
                 setSpinnerLoading(false)
                 // showDatePicker()
             } else {
@@ -37,7 +35,7 @@ function Bookings(props){
     },[])
     const nextPage=async (e)=>{
         e.preventDefault()
-        const response=await fetch("/bookings/"+cursor.next,{
+        const response=await fetch("/host/getProperty/"+cursor.next,{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -46,7 +44,7 @@ function Bookings(props){
             return response.json()
     }).then(data=>{
         if (data.status === "success") {
-            setBookings([...data.data])
+            setProperty([...data.data])
             
             let previous=cursor.next;
             setCursor({"next":data.next_cursor,"previous":data.previous_cursor})
@@ -67,7 +65,7 @@ function Bookings(props){
 
         e.preventDefault()
         if(cursor.previous!==""){
-        const response=await fetch("/bookings/"+cursor.previous,{
+        const response=await fetch("/host/getProperty/"+cursor.previous,{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -76,10 +74,10 @@ function Bookings(props){
             return response.json()
     }).then(data=>{
         if (data.status === "success") {
-            setBookings([...data.data])
+            setProperty([...data.data])
             // let previous=cursor.previous
             setCursor({"next":data.next_cursor,"previous":data.previous_cursor})
-            console.log(mybookings)
+            console.log(cursor)
             setSpinnerLoading(false)
             // showDatePicker()
         } else {
@@ -108,30 +106,29 @@ function Bookings(props){
             <table className="booking-details">
                 <thead>
                 <tr>
-                <th>Date</th>
-                <th>Booking Id</th>
+                <th>Registeration Date</th>
                 <th>Property Id</th>
-                <th>check in</th>
-                <th>check out</th>
+                <th>Property Name</th>
+                <th>Location</th>
+                <th>Type</th>
                 <th>Price</th>
                 <th>Status</th>
+                <th>Information</th>
                 </tr>
                 </thead>
                 <tbody>
                     {
-                    mybookings.map((item)=>(
-                        <TableRow item={item} key={item.booking_id}/>
+                    myProperties.map((item)=>(
+                        <TableRow item={item} key={item.property_id}/>
                     ))
                     
                     }
                 </tbody>
             </table>
-            {/* {mybookings.length>5? */}
             <div>
             <button className="pagination pagination-previous" onClick={previousPage}>previous</button>
             <button className="pagination pagination-next" onClick={nextPage}>Next</button>
             </div>
-            {/**/}
             </div>
             :null
             
@@ -141,18 +138,19 @@ function Bookings(props){
         </>
     )
 }
-export default Bookings;
+export default RegisteredProperty;
 export function TableRow(props){
     // console.log(props)
     return(
         <tr>
             <td>{props.item.date}</td>
-            <td>{props.item.booking_id}</td>
+            <td>{props.item.property_id}</td>
             <td><Link className="link-components-property" to={"/places/"+props.item.property_location+"/"+props.item.property_id}>{props.item.property_name}</Link></td>
-            <td>{props.item.check_in}</td>
-            <td>{props.item.check_out}</td>
+            <td>{props.item.property_location}</td>
+            <td>{props.item.property_type}</td>
             <td>{props.item.price}</td>
             <td>Active</td>
+            <td><button>View</button></td>
         </tr>
     )
 }

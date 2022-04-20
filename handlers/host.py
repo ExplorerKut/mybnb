@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from datetime import datetime
-from services.hostService import addProperty
+from services.hostService import addProperty, registeredProperty
 
 host = Blueprint("host", __name__)
 
@@ -18,3 +18,8 @@ def addPropertyHandler():
         "property_addDate": datetime.now(),
     }
     return addProperty(data)
+
+@host.route("/getProperty/",defaults={"cursor":None},methods=["GET"])
+@host.route("/getProperty/<string:cursor>",methods=["GET"])
+def getPropertyHandler(cursor):
+    return registeredProperty(cursor)

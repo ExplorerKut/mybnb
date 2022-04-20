@@ -25,3 +25,7 @@ class Bookings(ndb.Model):
     check_in = ndb.DateTimeProperty()
     check_out = ndb.DateTimeProperty()
     total_paid=ndb.IntegerProperty()
+
+class Favourites(ndb.Model):
+    property_id=ndb.IntegerProperty()
+    user_id=ndb.StringProperty()

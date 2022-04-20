@@ -11,11 +11,14 @@ import Bookings from './components/Bookings'
 import RequireAuth from './components/RequireAuth'
 import Login from './components/Login'
 import HostProperty from './components/HostProperty';
+import RegisteredProperty from './components/RegisteredProperty';
 import Properties from './components/Properties';
 import UseToken from './components/UseToken';
 import { AuthProvider } from './context/AuthProvider';
 import Booker from './components/Booker';
 import UseRole from './components/UseRole'
+import SearchLocation from './components/SearchLocation';
+import Favourites from './components/Favourites';
 function App() {
   const {token,removeToken,setToken}=UseToken()
   const [visibility,setVisibility]=useState(false);
@@ -37,12 +40,16 @@ function App() {
       <Route element={<RequireAuth token={token} role={role}/>}>
         <Route path="/host" element={<HostProperty token={token}/>}/>
         <Route path="/myBookings" element={<Bookings token={token}/>}/>
+        <Route path="/registeredProperty" element={<RegisteredProperty token={token}/>}/>
+        <Route path="/favourites" element={<Favourites token={token}/>}/>
+
       </Route>
       {/* <RequireAuth path="/host" component={<HostProperty token={token}/>} token={token}/> */}
-      <Route path="/places/:locationName" element={<Properties/>}/>
+      <Route path="/places/:locationName" element={<Properties token={token}/>}/>
       
       <Route path="/places/:locationName/:locationId" element={<Booker token={token}/>}/>
       <Route path="/host1" element={<HostProperty/>}/>
+      <Route path="locations/search/*" element={<SearchLocation token={token}/>}/>
       </Routes>
       </main>
       <footer><Footer/></footer>

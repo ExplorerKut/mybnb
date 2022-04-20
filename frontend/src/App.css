@@ -8,6 +8,10 @@
   height: 100%;
   
 }
+main{
+  padding-bottom: 60px;
+  /* margin-bottom:30px; */
+}
 Link{
   text-decoration: none;
 }
@@ -27,7 +31,7 @@ Link{
   flex-direction: row;
   justify-content:space-between;
   padding:10px;
-  align-items:flex-start;
+  align-items:center;
   color:black;
   flex-shrink: 1;
 
@@ -81,10 +85,27 @@ Link{
   border-radius: 15px;
   /* width: 20px; */
 }
+/* Search bar expanded */
 .location-search{
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  margin-right:auto;
+  margin-left:auto;
+  margin-bottom:10px;
 }
+.location-search input[type=text],input[type=date]{
+  padding:10px 10px;
+  border-radius: 5px;
+  /* padding */
+}
+.location-search input[type=submit]{
+  background-color: rgb(219, 57, 119);
+  border-radius: 5px;
+  padding: 10px;
+}
+/* Search Bar expanded css ends here */
+
 /* search bar end */
 /*  */
 /* Content css here */
@@ -296,6 +317,12 @@ font-size: 1.2em;
 
 /* login form css ends here */
 /* footer css starts here */
+footer{
+  position: fixed;
+  bottom:0;
+  width: 100%;
+
+}
 .footer-container{
   /* position: absolute; */
   display: flex;
@@ -391,6 +418,29 @@ font-size: 1.2em;
   width:90%;
   padding:5px;
 
+  
+}
+.map-container{
+  width: 50%;
+  /* margin-top:50px; */
+  margin:50px 0 0 10px;
+}
+.property-container-location{
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+  margin-right:auto;
+  margin-left:auto;
+  width:90%;
+  padding:5px;
+
+  
+}
+.anchor-div-flex{
+  display:flex;
+  flex-direction: column;
+  /* margin-left:10px;
+  margin-right:10px; */
 }
 .property-details-container{
   display: flex;
@@ -399,20 +449,54 @@ font-size: 1.2em;
   margin-bottom:10px;
   padding: 5px;
   border:1px solid;
+  /* justify-content: space-evenly; */
   border-radius: 2px;
+  /* width: 100%; */
   
 }
 .property-location-details{
   display: flex;
   flex-direction: column;
-  margin-left:10px;
+  margin-left:100px;
   margin-right:10px;
   width:60%;
+  
   
 }
 .property-location-price{
   align-self:flex-end;
+}
+.button-div{
+  align-self: flex-end;
+  width: 30px;
+}
+.favourite-button{
+  width: 40px;
+  background-color: white;
+  margin-bottom:2px;
+  /* border-radius:10px; */
+  border:0;
+  cursor:pointer;
+  align-self:flex-end;
 
+}
+/* .favourite-button ::hover{
+  poin
+} */
+.favourite{
+  width:30px;
+  /* stroke: #000; */
+  /* stroke-width: 5px; */
+  filter:invert(1);
+  /* filter: drop-shadow(0px 0px 1px black); */
+  /* outline: 1px solid black; */
+  /* border: 1px solid; */
+}
+.favourite-svg-click{
+  width:30px;
+  /* filter:invert(1); */
+  /* outline: 1px solid black;
+  border: 1px solid; */
 }
 /* PRoperties Viewer css ends here */
 .link-components{
@@ -468,6 +552,10 @@ font-size: 1.2em;
   text-align: center;
   display: flex;
   justify-content: center;
+}
+.link-components-property{
+  color:rgb(245, 86, 147);
+  text-decoration: none;
 }
 .loader-style{
   align-self: center;
@@ -584,3 +672,10 @@ font-size: 1.2em;
   cursor: pointer;
 }
 /* Bookings css ends here */
+
+
+.heading-center-empty{
+  margin: auto;
+  
+
+}

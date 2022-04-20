@@ -1,12 +1,13 @@
 import React,{ useEffect, useState } from 'react';
-import {Link} from 'react-router-dom'
+import {Link,useSearchParams} from 'react-router-dom'
 import Popup from './Popup'
 import Login from './Popup'
 import Search from './Search'
-
+import {SearchWith} from './Search'
 function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,setVisibility}){
   // console.log(window.location.pathname)
   // const [currentUrl,setUrl]=useState(window.location.pathname)
+ 
   const popupCloseHandler=()=>{
     setVisibility(false);
   }
@@ -25,18 +26,19 @@ function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,s
         removeToken()
         removeRole()
         setVisibility(false)
+        
         return response.json()
       })
     
   }
     return (
+      <>
       <div className="header-container sticky">
       <div className="header">
         <div className="header-name">
           <Link to="/" className="link-components"><h1>AirBnB</h1></Link>
         </div>
-        
-          <Search/>
+        <Search/>
         <ul className="menu-options">
         {!token&&token!==""&&token!==undefined?
               <li>
@@ -65,6 +67,11 @@ function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,s
         <Popup role={role} removeRole={removeRole} setRole={setRole} token={token} setToken={setToken} removeToken={removeToken} onClose={popupCloseHandler} show={visibility}/>
       </div>
       </div>
+      <div>
+        {/* <SearchWith isSearchBarVisible={true}/> */}
+      </div>
+      </>
+
     );
 }
 export default Header;
@@ -85,6 +92,7 @@ export function Menu(props){
         props.removeToken()
         props.removeRole()
         props.setVisibility(false)
+        window.location.reload()
         return response.json()
       })
     
@@ -99,12 +107,12 @@ export function Menu(props){
         <div className="dropdown-content">
         <li><Link className="link-components" to="/host">RegisterProperty</Link></li>
         <li><Link className="link-components" to="/myBookings">Bookings</Link></li>
-        <li><Link className="link-components" to="/....">RegisteredProperty</Link></li>
+        <li><Link className="link-components" to="/registeredProperty">RegisteredProperty</Link></li>
         <li><a href="#" onClick={logMeOut}>Logout</a></li>
         </div>:
         <div className="dropdown-content">
         <li><Link className="link-components" to="/myBookings">Bookings</Link></li>
-        <li><Link className="link-components" to="/....">Favourites</Link></li>
+        <li><Link className="link-components" to="/favourites">Favourites</Link></li>
         <li><a href="#" onClick={logMeOut}>Logout</a></li>
         </div>
         :null
