@@ -11,7 +11,7 @@ function Bookings(props){
         "message": "",
     });
     useEffect(async()=>{
-        let response=await fetch("/bookings/",{
+        let response=await fetch("/api/bookings/",{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -37,7 +37,7 @@ function Bookings(props){
     },[])
     const nextPage=async (e)=>{
         e.preventDefault()
-        const response=await fetch("/bookings/"+cursor.next,{
+        const response=await fetch("/api/bookings/"+cursor.next,{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -67,7 +67,7 @@ function Bookings(props){
 
         e.preventDefault()
         if(cursor.previous!==""){
-        const response=await fetch("/bookings/"+cursor.previous,{
+        const response=await fetch("/api/bookings/"+cursor.previous,{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }

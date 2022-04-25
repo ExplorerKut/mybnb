@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from datetime import datetime
-from services.hostService import addProperty, registeredProperty
+from services.hostService import addProperty, registeredProperty,deleteProperty
 
 host = Blueprint("host", __name__)
 
@@ -23,3 +23,7 @@ def addPropertyHandler():
 @host.route("/getProperty/<string:cursor>",methods=["GET"])
 def getPropertyHandler(cursor):
     return registeredProperty(cursor)
+
+@host.route("/delete/<int:locationId>",methods=["DELETE"])
+def deletePropertyHandler(locationId):
+    return deleteProperty(locationId)

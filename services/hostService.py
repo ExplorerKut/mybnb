@@ -1,6 +1,6 @@
-from flask import request,jsonify
+from flask import request, jsonify
 import bcrypt
-from models import User,Property
+from models import User, Property
 from app import client
 from app import jwt
 from google.cloud.ndb._datastore_query import Cursor
@@ -10,6 +10,7 @@ from flask_jwt_extended import (
     get_jwt_identity,
     jwt_required,
 )
+
 
 @jwt_required()
 def addProperty(data):
@@ -61,9 +62,10 @@ def addProperty(data):
             [{"status": "error", "message": "Could Not initiate datastore client"}]
         )
 
+
 @jwt_required()
-def registeredProperty(cursor,limit=5):
-    host_id=get_jwt_identity()
+def registeredProperty(cursor, limit=5):
+    host_id = get_jwt_identity()
     with client.context():
         # previous_cursor
         cursor = Cursor(urlsafe=cursor)
@@ -79,9 +81,9 @@ def registeredProperty(cursor,limit=5):
             .order(-Property.date_registered)
             .fetch_page(limit, start_cursor=cursor)
         )
-            # print(next_cursor1.urlsafe())
+        # print(next_cursor1.urlsafe())
 
-            # items.reverse()
+        # items.reverse()
         next_cursor = None if not next_cursor else next_cursor.urlsafe()
         next_cursor1 = None if not next_cursor1 else next_cursor1.urlsafe()
         # previous_cursor = None if not cursor else cursor.urlsafe()
@@ -94,9 +96,9 @@ def registeredProperty(cursor,limit=5):
                 temp["date"] = entity.date_registered
                 # temp["booking_id"] = entity.key.id()
                 temp["property_name"] = entity.name
-                temp["property_location"]= entity.location
-                temp["property_id"]= entity.key.id()
-                temp["property_type"]= entity.property_type
+                temp["property_location"] = entity.location
+                temp["property_id"] = entity.key.id()
+                temp["property_type"] = entity.property_type
                 # temp["check_in"] = entity.check_in
                 # temp["check_out"] = entity.check_out
                 temp["price"] = entity.price
@@ -121,3 +123,16 @@ def registeredProperty(cursor,limit=5):
             )
         else:
             return jsonify({"status": "error", "message": "No Property for this user"})
+
+
+@jwt_required()
+def deleteProperty(locationId):
+    with client.context():
+        is_property_present = Property.get_by_id(locationId)
+        if is_property_present:
+            is_property_present.key.delete()
+            return jsonify({"status": "success", "message": "deleted Successfully"})
+        else:
+            return jsonify(
+                {"status": "error", "message": "error while deleting property"}
+            )

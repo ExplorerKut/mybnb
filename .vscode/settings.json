@@ -1,0 +1,5 @@
+{
+  "javascript.suggest.autoImports": true,
+  "python.testing.autoTestDiscoverOnSaveEnabled": true,
+  "python.analysis.autoImportCompletions": false
+}

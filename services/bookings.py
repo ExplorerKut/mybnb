@@ -53,16 +53,18 @@ def getBookings(cursor, nextPage=True, limit=5):
             for entity in items:
                 # print(entity.key.id)
                 property_details=   Property.get_by_id(entity.property_id)
-                temp = {}
-                temp["date"] = entity.booking_date
-                temp["booking_id"] = entity.key.id()
-                temp["property_name"] = property_details.name
-                temp["property_location"]= property_details.location
-                temp["property_id"]= entity.property_id
-                temp["check_in"] = entity.check_in
-                temp["check_out"] = entity.check_out
-                temp["price"] = entity.total_paid
-                send_data.append(temp)
+                if property_details:
+                    temp = {}
+                    temp["date"] = entity.booking_date
+                    temp["booking_id"] = entity.key.id()
+                    temp["property_name"] = property_details.name
+                    temp["property_location"]= property_details.location
+                    temp["property_id"]= entity.property_id
+                    temp["check_in"] = entity.check_in
+                    temp["check_out"] = entity.check_out
+                    temp["price"] = entity.total_paid
+                    # temp["status"]=[Date Passed]
+                    send_data.append(temp)
 
             # send_data = sorted(send_data, key=lambda entity: entity["check_in"])
             # print("-=======")

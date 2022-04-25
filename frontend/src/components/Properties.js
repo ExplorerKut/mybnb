@@ -9,9 +9,13 @@ function Properties(props){
     let {locationName}=useParams()
     const [spinnerLoading,setSpinnerLoading]=useState(true)
     // console.log(locationName)
+    if(locationName==undefined){
+        locationName=""
+    }
     useEffect(async()=>{
         let response;
         if(props.token!==null){
+            
             response=await fetch("/api/places/"+locationName,{
                 headers:{
                     'Authorization':'Bearer '+ props.token
@@ -22,7 +26,6 @@ function Properties(props){
             }) 
         }
         else{
-
         response=await fetch("/api/places/"+locationName
         )
         
@@ -56,7 +59,9 @@ function Properties(props){
         <div>
 
         </div>
-        <h1 style={{visibility:!spinnerLoading?'visible':'hidden'}}>There are {listProperties.length} registered property in {locationName.toLowerCase()}</h1>
+        {locationName!=undefined?
+        <h1 style={{visibility:!spinnerLoading?'visible':'hidden'}}>There are {listProperties.length} registered property in {locationName.toLowerCase()}</h1>:null
+        }
             {listProperties.map((item)=>(
                 
             <ListProperty token={props.token} item={item} locationName={locationName} key={item.id}/>
@@ -146,14 +151,14 @@ export function ListProperty(props){
     }
     return(
                 <div className="property-details-container" key={props.item.id}>
-                <Link className="link-components" to={`/places/${props.locationName}/${props.item.id}`} key={props.item.id}>
+                <Link className="link-components" to={`/places/${props.item.location}/${props.item.id}`} key={props.item.id}>
                 <img src={locationImage}></img>
                 </Link>
                 <div className="property-location-details">
                 
                 <button className="favourite-button" onClick={onButtonClick} value={props.item.id}> <img className={`${isClicked||props.item.favourite?"favourite-svg-click":"favourite"}`} src={heartImage}/></button>
                 
-                <Link className="link-components anchor-div-flex" to={`/places/${props.locationName}/${props.item.id}`} key={props.item.id}>
+                <Link className="link-components anchor-div-flex" to={`/places/${props.item.location}/${props.item.id}`} key={props.item.id}>
                     <h4 className="property-location-type">A {props.item.property_type} in {props.locationName}</h4>
                     <h3 className="property-location-name">{props.item.name}</h3>
                     <br></br>

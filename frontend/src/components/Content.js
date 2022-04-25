@@ -11,7 +11,7 @@ function Content(){
     const [locations_name,setLocations]=useState([])
     const [spinnerLoading,setSpinnerLoading]=useState(true)
     useEffect(async ()=>{
-        const response=await fetch("api/locations/")
+        const response=await fetch("/api/locations/")
         .then(response=>{
             return response.json()
         })
@@ -53,7 +53,7 @@ function Content(){
                 */}
             </div>
             <h3>
-            <Link className="link-more" to="locations/search/">Click Here to See more Locations</Link>
+            <Link className="link-more" to="/places/">Click Here to See more Locations</Link>
             </h3>
         </div>
         

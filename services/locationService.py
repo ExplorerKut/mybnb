@@ -9,9 +9,9 @@ from flask_jwt_extended import (
     create_access_token,
     unset_jwt_cookies,
     get_jwt_identity,
-    jwt_required,
+    jwt_required
     
-)
+)   
 
 
 def getAllLocations():
@@ -46,6 +46,7 @@ def getAllLocations():
         )
 
 @jwt_required(optional=True)
+# @verify_jwt_in_request(optional=True)
 def getPlaces(locationName):
     try:
         with client.context():
@@ -53,50 +54,52 @@ def getPlaces(locationName):
                 property_details = Property.query(
                     Property.location == locationName.lower()
                 ).fetch()
-                print(get_jwt_identity())
-                favourites=[]
-                if get_jwt_identity():
-                    favourites=[entity.property_id for entity in Favourites.query(Favourites.user_id==get_jwt_identity()).fetch()]
-                    print(favourites)
-                # else:
-                response_data = []
-                # favourites = Favourites.query()
-                if len(property_details) > 0:
-                    for entity in property_details:
-                        temp = {}
-                        temp["address"] = entity.address
-                        temp["date_registered"] = entity.date_registered
-                        temp["description"] = entity.description
-                        temp["host_id"] = entity.host_id
-                        temp["name"] = entity.name
-                        temp["property_type"] = entity.property_type
-                        temp["location"] = entity.location
-                        temp["price"] = entity.price
-                        temp["id"] = entity.key.id()
-                        temp["favourite"]=False
-                        if get_jwt_identity() and temp["id"] in favourites:
-                            print("here")
-                            temp["favourite"]=True
-                        response_data.append(temp)
-                    return jsonify(
-                        [
-                            {
-                                "status": "success",
-                                "message": "Location returned",
-                                "response": response_data,
-                            }
-                        ]
-                    )
-                else:
-                    return jsonify(
-                        [
-                            {
-                                "status": "fail",
-                                "message": "Location Not Found",
-                            }
-                        ]
-                    )
             else:
+                property_details=Property.query().fetch()
+            # print(get_jwt_identity())
+            favourites=[]
+            if get_jwt_identity():
+                favourites=[entity.property_id for entity in Favourites.query(Favourites.user_id==get_jwt_identity()).fetch()]
+                # print(favourites)
+            # else:
+            response_data = []
+            # favourites = Favourites.query()
+            if len(property_details) > 0:
+                for entity in property_details:
+                    temp = {}
+                    temp["address"] = entity.address
+                    temp["date_registered"] = entity.date_registered
+                    temp["description"] = entity.description
+                    temp["host_id"] = entity.host_id
+                    temp["name"] = entity.name
+                    temp["property_type"] = entity.property_type
+                    temp["location"] = entity.location
+                    temp["price"] = entity.price
+                    temp["id"] = entity.key.id()
+                    temp["favourite"]=False
+                    if get_jwt_identity() and temp["id"] in favourites:
+                        print("here")
+                        temp["favourite"]=True
+                    response_data.append(temp)
+                return jsonify(
+                    [
+                        {
+                            "status": "success",
+                            "message": "Location returned",
+                            "response": response_data,
+                        }
+                    ]
+                )
+            else:
+                return jsonify(
+                    [
+                        {
+                            "status": "fail",
+                            "message": "Location Not Found",
+                        }
+                    ]
+                )
+        
                 
     except:
         return jsonify(
@@ -255,7 +258,7 @@ def bookPlace(data):
                 break
         if not isBooked:
             booking_details = Bookings(
-                booker_id=data.get("booker_id"),
+                booker_id=get_jwt_identity(),
                 property_id=data.get("property_id"),
                 booking_date=data.get("booking_date"),
                 total_paid=data.get("total_paid"),

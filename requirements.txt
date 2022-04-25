@@ -1,10 +1,14 @@
+bcrypt==3.2.0
 cachetools==4.2.4
 certifi==2021.10.8
+cffi==1.15.0
 charset-normalizer==2.0.12
 click==8.0.4
 colorama==0.4.4
 Deprecated==1.2.13
 Flask==2.0.3
+Flask-Bcrypt==0.7.1
+Flask-JWT-Extended==4.3.1
 google-api-core==1.31.5
 google-auth==1.35.0
 google-cloud-core==1.7.2
@@ -22,6 +26,8 @@ proto-plus==1.20.3
 protobuf==3.19.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
+pycparser==2.21
+PyJWT==2.3.0
 pymemcache==3.5.1
 pyparsing==3.0.7
 pytz==2021.3

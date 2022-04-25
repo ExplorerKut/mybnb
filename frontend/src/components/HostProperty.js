@@ -21,7 +21,7 @@ function HostProperty({token}){
         // console.log(sendData)
         e.preventDefault()
         
-        const response=await fetch("addProperty",{
+        const response=await fetch("/api/host/addProperty",{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -44,6 +44,7 @@ function HostProperty({token}){
             <h2>Add Your Property in a matter of minutes</h2>
             <div className='form-container'>
             <form className="form-details" id="form-detail">
+                <div class="form-details-div">
                 <label htmlFor="property-name">Name</label>
                 <input type="text" name="property-name" className="property-name" ref={property_name}></input>
                 <label htmlFor="property-type">Property Type
@@ -55,7 +56,7 @@ function HostProperty({token}){
                     <option value="Bed and Breakfast">Bed and Breakfast</option>
                     <option value="Farm">Farm</option>
                 </select>
-                
+                </div>
                 <label type="property-description">Description</label>
                 <input type="text" name="property-description" className='property-description' ref={property_description}></input>
                 <label htmlFor="property-location">Location</label>

@@ -17,7 +17,7 @@ function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,s
   }
   let logMeOut=async (e)=>{
     e.preventDefault()
-      let response=await fetch("/auth/logout",{
+      let response=await fetch("/api/auth/logout",{
         method:"POST",
         headers:{
         "Content-Type":"application/json",
@@ -36,7 +36,7 @@ function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,s
       <div className="header-container sticky">
       <div className="header">
         <div className="header-name">
-          <Link to="/" className="link-components"><h1>AirBnB</h1></Link>
+          <Link to="/" className="link-components"><h1>YourBnB</h1></Link>
         </div>
         <Search/>
         <ul className="menu-options">
@@ -83,7 +83,7 @@ export function Menu(props){
   }
   let logMeOut=async (e)=>{
     e.preventDefault()
-      let response=await fetch("/auth/logout",{
+      let response=await fetch("/api/auth/logout",{
         method:"POST",
         headers:{
         "Content-Type":"application/json",

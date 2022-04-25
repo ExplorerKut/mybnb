@@ -29,3 +29,14 @@ class Bookings(ndb.Model):
 class Favourites(ndb.Model):
     property_id=ndb.IntegerProperty()
     user_id=ndb.StringProperty()
+
+class Reviews(ndb.Model):
+    property_id=ndb.IntegerProperty()
+    cleanliness=ndb.IntegerProperty()
+    location=ndb.IntegerProperty()
+    check_in=ndb.IntegerProperty()
+    value=ndb.IntegerProperty()
+    accuracy=ndb.IntegerProperty()
+    review=ndb.StringProperty()
+    posted_by=ndb.StringProperty()
+    posting_date=ndb.DateTimeProperty()

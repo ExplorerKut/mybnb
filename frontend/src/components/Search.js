@@ -1,8 +1,10 @@
 import React,{useState, useEffect,useRef} from 'react'
 import searchImage from '../images/search (1).png'
-import { useSearchParams } from 'react-router-dom'
-import ReactDOM, { unstable_renderSubtreeIntoContainer } from 'react-dom'
+
+import { useSearchParams,useNavigate } from 'react-router-dom'
+import ReactDOM from 'react-dom'
 function Search(){
+    let navigate=useNavigate()
     const [showSearch,setSearch]=useState(false)
     const [params]=useSearchParams()
     const [height,setHeight]=useState(0)
@@ -20,6 +22,11 @@ function Search(){
         return () => 
            window.removeEventListener("scroll", listenToScroll); 
       }, [height])
+      const showSearchForm=()=>{
+          if(showSearch===true){
+          setSearch(false)}
+          else{setSearch(true)}
+      }
       const listenToScroll = () => {
         let heightToHideFrom =10;
         const winScroll = document.body.scrollTop || 
@@ -29,6 +36,7 @@ function Search(){
         if (winScroll > heightToHideFrom) {  
             
              showSearch && setSearch(false);
+             console.log(params)
              if(params.get("location")!=undefined){
                 locationValue.current.value=params.get("location");
                 }
@@ -46,16 +54,25 @@ function Search(){
              setSearch(true);
         }  
       };
+      const handleSubmit=(e)=>{
+        e.preventDefault()
+        // if(locationValue.current.value!=undefined){
+        //     l
+        // }
+    
+        navigate("/locations/search?location="+locationValue.current.value+"&checkin="+checkin.current.value+"&checkout="+checkout.current.value)
+        window.location.reload()
+      }
 
     return(
         <>
         { showSearch?
         <div className="search-bar">
-            <input className="search-input" type="text" placeholder="Start Your Search" readOnly></input>
+            <input className="search-input" type="text" placeholder="Start Your Search" onClick={showSearchForm}readOnly></input>
             <img src={searchImage}/>
         </div>:
-        <div>
-            <form action="/locations/search" className="location-search" method="get">
+        <div className="search-container">
+            <form className="location-search" method="get" onSubmit={handleSubmit}>
                 <input ref={locationValue} name="location" type="text" placeholder="Location"/>
                 <input ref={checkin} name="checkin" type="date" min={todayDate}/>
                 <input ref={checkout} name="checkout" type="date" onClick={setMinimumCheckout}/>

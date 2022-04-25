@@ -11,7 +11,7 @@ function RegisteredProperty(props){
         "message": "",
     });
     useEffect(async()=>{
-        let response=await fetch("/host/getProperty/",{
+        let response=await fetch("/api/host/getProperty/",{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -35,7 +35,7 @@ function RegisteredProperty(props){
     },[])
     const nextPage=async (e)=>{
         e.preventDefault()
-        const response=await fetch("/host/getProperty/"+cursor.next,{
+        const response=await fetch("/api/host/getProperty/"+cursor.next,{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -65,7 +65,7 @@ function RegisteredProperty(props){
 
         e.preventDefault()
         if(cursor.previous!==""){
-        const response=await fetch("/host/getProperty/"+cursor.previous,{
+        const response=await fetch("/api/host/getProperty/"+cursor.previous,{
             headers:{
                 'Authorization':'Bearer '+ props.token
             }
@@ -93,7 +93,7 @@ function RegisteredProperty(props){
     return(
         <>
             <div className="user-bookings">
-            <h1>Your bookings</h1>
+            <h1>Your Properties</h1>
             <Puff
                 type="Puff"
                 color="#00BFFF"
@@ -113,13 +113,13 @@ function RegisteredProperty(props){
                 <th>Type</th>
                 <th>Price</th>
                 <th>Status</th>
-                <th>Information</th>
+                <th>Select <input type="checkbox"></input></th>
                 </tr>
                 </thead>
                 <tbody>
                     {
                     myProperties.map((item)=>(
-                        <TableRow item={item} key={item.property_id}/>
+                        <TableRow token={props.token} item={item} key={item.property_id}/>
                     ))
                     
                     }
@@ -141,6 +141,23 @@ function RegisteredProperty(props){
 export default RegisteredProperty;
 export function TableRow(props){
     // console.log(props)
+    const deleteProperty=async(e)=>{
+        const response=await fetch("/api/host/delete/"+props.item.property_id,{
+            method:"DELETE",
+            headers:{
+                Authorization:"Bearer "+props.token
+            }
+        }).then(response=>{
+            return response.json()
+        }).then(data=>{
+            if(data.status==="success"){
+                window.location.reload()
+            }
+            else{
+                window.alert("hie")
+            }
+        })
+    }
     return(
         <tr>
             <td>{props.item.date}</td>
@@ -150,7 +167,7 @@ export function TableRow(props){
             <td>{props.item.property_type}</td>
             <td>{props.item.price}</td>
             <td>Active</td>
-            <td><button>View</button></td>
+            <td><button class="delete-button" onClick={deleteProperty}>X</button></td>
         </tr>
     )
 }

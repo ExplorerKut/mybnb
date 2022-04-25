@@ -45,7 +45,7 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
         
         let sendData={"email":login_email.current.value,"password":login_password.current.value}
         // console.log(sendData)
-        let response=await fetch("/auth/login",{
+        let response=await fetch("/api/auth/login",{
             method:"POST",
             headers:{
                 "Content-type":"Application/json"

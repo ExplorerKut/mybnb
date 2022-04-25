@@ -102,6 +102,7 @@ Link{
 .location-search input[type=submit]{
   background-color: rgb(219, 57, 119);
   border-radius: 5px;
+  color:white;
   padding: 10px;
 }
 /* Search Bar expanded css ends here */
@@ -359,6 +360,7 @@ footer{
 /* RegisterPropery css here */
 .property-form{
   margin-right:auto;
+
   margin-left:auto;
   width: 70%;
   display: flex;
@@ -368,6 +370,7 @@ footer{
 }
 
 .form-details{
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -376,7 +379,18 @@ footer{
   /* align-self: flex-start; */
   margin:2px;
 }
-.form-details input{
+.form-details-div{
+  /* margin-top:10px; */
+  margin:10px;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-evenly;
+  /* flex-wrap:nowrap; */
+  align-items:center;
+  /* width: 100%; */
+}
+
+.form-details  input{
   display: inline-block;
   box-sizing: border-box;
   padding: 10px 10px;
@@ -384,12 +398,12 @@ footer{
   width: 50%;
   /* align-self: flex-start; */
 }
-.form-details select{
+.form-details-div select{
   width: 50%;
   padding: 10px;
 }
 .form-details button {
-  background-color: rgb(245, 86, 147);
+  background-color: #f55693;
   color: white;
   padding: 14px 20px;
   font-size:1.2em;
@@ -544,6 +558,7 @@ footer{
   margin-right:auto;
   margin-left:auto;
   padding:10px;
+  color: white;
   border-radius: 5px;
   background-color:rgb(245, 86, 147);
   width: 50%;
@@ -656,6 +671,11 @@ footer{
 .booking-details tr:nth-child(even){
   background-color: rgb(214, 214, 217);
 }
+.delete-button{
+  background-color: rgb(219, 57, 119);
+  color: white;
+  padding:2px 5px 2px 5px;
+}
 .bookings-content{
   display: flex;
   flex-direction: column;
@@ -676,6 +696,96 @@ footer{
 
 .heading-center-empty{
   margin: auto;
+
+}
+
+/* REview css */
+.review-container{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content:space-evenly;
+  align-items:center;
+}
+.review{
+  /* width:40px; */
+ /* width:100px; */
+  /* width:100px; */
+  /* margin:20px;  */
+  /* text-align: justify; */
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-evenly;
+  /* flex-wrap:wrap; */
+  /* padding: 10px; */
+}
+.review h4{
+  margin-left:0px;
+  margin-right:20px;
+  /* margin-top:10px; */
+}
+.review-container div{
+  margin:10px;
+}
+.show-review{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.reviewMessage{
+  width: 88%;
+  text-align:center;
+}
+.show-review button{
+  font-size:16px;
+  color: white;
+  padding:5px 10px;
+  border-radius:3px;
+  background-color:rgb(245, 86, 147);
+}
+.reviewMessage textarea{
+  /* margin:2px 15px 2px 15px; */
+  /* margin-left:0; */
+  width:100%;
+  font-size:20px;
+  padding:5px;
+}
+/* ends here */
+
+/* @media screen and (max-width:760px) {
+  .location-search{
+    width:500px;
+  }
+} */
+.review-star-img{
+  width:30px;
+  /* height: 100px; */
+}
+.top-headings-review{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* justify-content: space-evenly; */
   
+}
+.top-headings-review h2{
+  padding:10px;
+  
+}
+.progress-labels{
+  
+  margin:10px;
+  
+
+}
+.show-review-message{
+  display: flex;
+  flex-direction: column;
+
+}
+.review-message{
+  display: flex;
+  flex-direction: column;
 
 }

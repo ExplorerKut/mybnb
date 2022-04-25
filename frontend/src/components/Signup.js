@@ -48,7 +48,7 @@ function Signup({setLogin}){
         if(isMatching){
         let sendData={"email":signup_email.current.value,"password":signup_password.current.value,"role":signup_role.current.value}
         console.log(sendData)
-        let response=await fetch("/auth/signup",{
+        let response=await fetch("/api/auth/signup",{
             method:"POST",
             headers:{
                 "Content-type":"Application/json"

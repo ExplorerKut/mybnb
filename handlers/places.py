@@ -1,3 +1,4 @@
+from email.policy import default
 from flask import Blueprint, request
 import pytz
 from datetime import datetime
@@ -20,7 +21,7 @@ def timeConverter(timezone, current_time):
 
 
 
-
+@places.route("/",defaults={"locationName": ""},methods=["GET"])
 @places.route("/<string:locationName>", methods=["GET"])
 def getPlacesHandler(locationName):
     return getPlaces(locationName)
@@ -43,7 +44,7 @@ def bookPlaceHandler(locationName, locationId):
     format = "%Y-%m-%dT%H:%M:%S.%fZ"
     format1 = "%Y-%m-%dT%H:%M:%S.%f%z"
     tz = pytz.timezone(request_params.get("timezone"))
-    booker_id = request_params.get("host_id")
+    # booker_id = request_params.get("host_id")
     property_id = request_params.get("id")
     booking_date = datetime.strptime(
         request_params.get("booking_date"), format
@@ -63,7 +64,7 @@ def bookPlaceHandler(locationName, locationId):
 
     total_paid = request_params.get("price")
     data = {
-        "booker_id": booker_id,
+        # "booker_id": booker_id,
         "property_id": property_id,
         "booking_date": booking_date,
         "check_in": check_in,

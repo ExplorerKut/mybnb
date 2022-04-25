@@ -5,6 +5,7 @@ location = Blueprint("location", __name__)
 
 
 def timeConverter(timezone, current_time):
+
     format = "%Y-%m-%dT%H:%M:%S.%f%z"
     current_time = current_time.replace(tzinfo=pytz.UTC)
     current_time = current_time.astimezone(timezone).replace(tzinfo=None)
@@ -25,4 +26,3 @@ def getSearchLocation():
     check_out = None if check_out == "" else float(check_out)
     data = {"location": location, "check_in": check_in, "check_out": check_out}
     return searchLocation(data)
-

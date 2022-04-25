@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import locationImage from "../images/location.jpeg";
+import Rating from "@material-ui/lab/Rating"
 import { DayClickEventHandler, DayPicker, isMatch } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import Popup from "./Popup.js";
 import  {Message}  from "./Popup.js";
+import Review from './Review.js'
 import { Puff } from "react-loader-spinner";
+import Button from '@material-ui/core/Button'
 // import { isMatch } from 'date-fns'
 function Booker({ token }) {
   const [popMessage, setMessage ]= useState({
@@ -224,7 +227,7 @@ function Booker({ token }) {
             </div>
            
           </div>
-            
+          <Review id={propertyDetails[0].id} token={token}/>
         </div>
       ))}
       <Message messageShow={popMessage.show}>
@@ -235,3 +238,60 @@ function Booker({ token }) {
   );
 }
 export default Booker;
+
+// export function ReviewRating(){
+//   const [value1, setValue1] = useState(0)
+//   const [location, setLocation] = useState(0)
+//   const [cleanliness, setCleanliness] = useState(0)
+//   const [check_in, setCheckIn] = useState(0)
+//   const [accuracy, setAccuracy] = useState(0)
+  
+//   return(
+//     <div>
+//     <div className="review-container">
+//     <div className="review">
+//     <h4>Cleanliness</h4>
+//     <Rating name="simple-controlled0" value={cleanliness} onChange={(event,newValue)=>{setCleanliness(newValue)}}/>
+//     </div>
+//     <div className="review">
+//     <h4>Location</h4>
+//     <Rating name="simple-controlled1" value={location} onChange={(event,newValue)=>{setLocation(newValue)}}/>
+//     </div>
+//     <div className="review">
+//     <h4>Check In</h4>
+//     <Rating name="simple-controlled2" value={check_in} onChange={(event,newValue)=>{setCheckIn(newValue)}}/>
+//     </div>
+//     <div className="review">
+//     <h4>Value</h4>
+//     <Rating name="simple-controlled3" value={value1} onChange={(event,newValue)=>{setValue1(newValue)}}/>
+//     </div>
+//     <div className="review">
+//     <h4>Accuracy</h4>
+//     <Rating name="simple-controlled4" value={accuracy} onChange={(event,newValue)=>{setAccuracy(newValue)}}/>
+//     </div>
+//     </div>
+//     </div>
+//   )
+// }
+
+// export function ReviewMessage(props){
+//   const message=useRef()
+//   const submitReview=async (e)=>{
+//       e.preventDefault()
+//       const response=await fetch("/api/reviews/post",{
+//         method:"POST",
+//         headers:{
+//           "Content-type":"Application/json",
+//           "Authorization":"Bearer "+props.token
+//         }
+//         ,
+//         body:JSON.stringify("")
+//       })
+//   }
+//   return(
+//     <div className="reviewMessage">
+//     <textarea ref={message}rows="5"></textarea>
+//     <button onClick={submitReview}>POST</button>
+//     </div>
+//   )
+// };

@@ -1,7 +1,7 @@
 import './App.css';
 import {useState,useEffect} from 'react'
 import {render} from "react-dom"
-import { BrowserRouter,Routes, Route} from 'react-router-dom';
+import { BrowserRouter,Routes, Route,useRoutes} from 'react-router-dom';
 import Popup from './components/Popup'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -20,6 +20,7 @@ import UseRole from './components/UseRole'
 import SearchLocation from './components/SearchLocation';
 import Favourites from './components/Favourites';
 function App() {
+  
   const {token,removeToken,setToken}=UseToken()
   const [visibility,setVisibility]=useState(false);
   const {role,removeRole,setRole}=UseRole()
@@ -27,6 +28,7 @@ function App() {
   let setterofVisibility=()=>{
     setVisibility(true)
   }
+
   return (
     <BrowserRouter>
       <>
@@ -45,7 +47,12 @@ function App() {
 
       </Route>
       {/* <RequireAuth path="/host" component={<HostProperty token={token}/>} token={token}/> */}
-      <Route path="/places/:locationName" element={<Properties token={token}/>}/>
+      <Route path="/places/" element={<Properties token={token}/>}>
+        <Route path=":locationName" element={<Properties token={token}/>}>
+        {/* <Route path=":locationId" element={<Booker token={token}/>}/> */}
+        </Route>
+      </Route>
+      
       
       <Route path="/places/:locationName/:locationId" element={<Booker token={token}/>}/>
       <Route path="/host1" element={<HostProperty/>}/>
