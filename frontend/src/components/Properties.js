@@ -159,7 +159,7 @@ export function ListProperty(props){
                 <button className="favourite-button" onClick={onButtonClick} value={props.item.id}> <img className={`${isClicked||props.item.favourite?"favourite-svg-click":"favourite"}`} src={heartImage}/></button>
                 
                 <Link className="link-components anchor-div-flex" to={`/places/${props.item.location}/${props.item.id}`} key={props.item.id}>
-                    <h4 className="property-location-type">A {props.item.property_type} in {props.locationName}</h4>
+                    <h4 className="property-location-type">A {props.item.property_type} in {props.item.location}</h4>
                     <h3 className="property-location-name">{props.item.name}</h3>
                     <br></br>
                     <h4 className='property-location-description'>{props.item.description}</h4>
