@@ -44,10 +44,10 @@ function Favourites(props){
         }
         else{
             setSpinnerLoading(false)
-            setMessage({"type":response[0].status,"message":response[0].message,"show":true})
-            setTimeout(()=>{
-                setMessage({"type":"","show":false,"message":""})
-            },4000)
+            // setMessage({"type":response[0].status,"message":response[0].message,"show":true})
+            // setTimeout(()=>{
+            //     setMessage({"type":"","show":false,"message":""})
+            // },4000)
         }
     },[])
     return(
@@ -66,7 +66,7 @@ function Favourites(props){
         <div>
 
         </div>
-        <h1 style={{visibility:!spinnerLoading?'visible':'hidden'}}>You have {listProperties.length} property set as Favourite</h1>
+        <h1 style={{visibility:!spinnerLoading&&!listProperties.length==0?'visible':'hidden'}}>You have {listProperties.length} property set as Favourite</h1>
             {listProperties.map((item)=>(
             <ListProperty onDelete={true} token={props.token} item={item} locationName={locationName} key={item.id}/>
             ))
@@ -75,8 +75,8 @@ function Favourites(props){
                         <h1>{popMessage.type}</h1>
                         <h2>{popMessage.message}</h2>
             </Message>
-        {listProperties.length==0?<div className="heading-center-empty"><h1 className="heading-center-empty">No Properties added in Favourites</h1>
-        <Link to="/">Go Here to search Locations</Link></div>:null}
+        {listProperties.length==0&&!spinnerLoading?<div className="heading-center-empty"><h1 className="heading-center-empty">No Properties added in Favourites</h1>
+        <Link to="/" >Go Here to search Locations</Link></div>:null}
         </div>
     )
 }

@@ -36,9 +36,12 @@ Link{
   flex-shrink: 1;
 
 }
+.header-name{
+  flex-shrink: 1 20em;
+}
 .header a{
   text-decoration: none;
-  flex-shrink: 1;
+  
 }
 .eye-icon{
   width: 5%;
@@ -50,7 +53,7 @@ Link{
 .header h1 {
   font-size: 2em;
   padding-left: 30px;
-  flex-shrink: 1;
+  /* flex-shrink: 1; */
 }
 .sticky{
   position:sticky;
@@ -60,6 +63,7 @@ Link{
 .search-bar{
   width: 30%;
   position: relative;
+  flex-shrink:2 20em;
 }
 .search-bar input[type=text]{
   box-sizing: border-box;
@@ -86,6 +90,9 @@ Link{
   /* width: 20px; */
 }
 /* Search bar expanded */
+/* .search-container{
+  width: 10%;
+} */
 .location-search{
   display: flex;
   flex-direction: row;
@@ -93,6 +100,7 @@ Link{
   margin-right:auto;
   margin-left:auto;
   margin-bottom:10px;
+  
 }
 .location-search input[type=text],input[type=date]{
   padding:10px 10px;
@@ -691,6 +699,9 @@ footer{
   border: none;
   cursor: pointer;
 }
+.pagination:disabled{
+  background-color: rgb(137, 131, 131);
+}
 /* Bookings css ends here */
 
 
@@ -787,5 +798,16 @@ footer{
 .review-message{
   display: flex;
   flex-direction: column;
+}
 
+@media screen and (max-width:500px){
+    .search-bar{
+      width:10%;
+    }
+    .search-container{
+      width:20%;
+    }
+    .location-search{
+      width:10%;
+    }
 }

@@ -27,8 +27,7 @@ def postReview(data):
             ).fetch()
             if len(has_user_booked_property) > 0:
                 has_reviewed_before = Reviews.query(
-                    Reviews.posted_by == get_jwt_identity()
-                ).fetch()
+                    Reviews.posted_by == get_jwt_identity(),Reviews.property_id==data.get("locationId")).fetch()
                 if len(has_reviewed_before) == 0:
                     review = Reviews(
                         property_id=data.get("locationId"),
@@ -123,7 +122,10 @@ def getReviews(propertyId, cursor, limit=5):
                     }
                 )
             else:
-                return jsonify({"status": "error", "message": "No review present"})
+                return jsonify({"status": "error", "next_cursor": "",
+                        "previous_cursor": ""
+                        if not previous_cursor
+                        else previous_cursor.decode("utf-8"),"message": "No review present"})
 
 def getReviewsAverage(propertyId):
     with client.context():
@@ -142,9 +144,9 @@ def getReviewsAverage(propertyId):
                     value += entity.value
                     accuracy += entity.accuracy
                     check_in += entity.check_in
-                review_average_overall = (
+                review_average_overall = ((
                     cleanliness + location + value + accuracy + check_in
-                ) / len(reviews)
+                ) / len(reviews))/5
                 no_of_reviews = len(reviews)
                 reviewAverage = [
                     # {"reviewAverage": review_average_overall},
@@ -175,8 +177,8 @@ def getReviewsAverage(propertyId):
                     {"check_in": 0},
                     {"value": 0},
                 ]
-                return jsonfiy(
+                return jsonify(
                     {"status":"error",
                     "message":"No review Present",
-                    "data":[reviewAverage,review_average_overall,no_of_reviews]}
+                    "data":[reviewAverage,0,no_of_reviews]}
                 )

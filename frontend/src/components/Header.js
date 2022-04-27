@@ -1,5 +1,5 @@
 import React,{ useEffect, useState } from 'react';
-import {Link,useSearchParams} from 'react-router-dom'
+import {Link,useSearchParams,useLocation} from 'react-router-dom'
 import Popup from './Popup'
 import Login from './Popup'
 import Search from './Search'
@@ -7,7 +7,8 @@ import {SearchWith} from './Search'
 function Header({role,setRole,removeRole,token,setToken,removeToken,visibility,setVisibility}){
   // console.log(window.location.pathname)
   // const [currentUrl,setUrl]=useState(window.location.pathname)
- 
+  
+  
   const popupCloseHandler=()=>{
     setVisibility(false);
   }
@@ -78,6 +79,10 @@ export default Header;
 export function Menu(props){
   const [isMenuVisible,setMenu]=useState(false)
   const [role,setRole]=useState(localStorage.getItem("role"))
+  const location=useLocation()  
+  useEffect(()=>{
+    setMenu(false)
+  },[location])
   const menuVisible=()=>{
     isMenuVisible?setMenu(false):setMenu(true)
   }
@@ -108,6 +113,7 @@ export function Menu(props){
         <li><Link className="link-components" to="/host">RegisterProperty</Link></li>
         <li><Link className="link-components" to="/myBookings">Bookings</Link></li>
         <li><Link className="link-components" to="/registeredProperty">RegisteredProperty</Link></li>
+        <li><Link className="link-components" to="/favourites">Favourites</Link></li>
         <li><a href="#" onClick={logMeOut}>Logout</a></li>
         </div>:
         <div className="dropdown-content">

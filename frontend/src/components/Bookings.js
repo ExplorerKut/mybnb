@@ -1,6 +1,8 @@
 import {useState,useEffect} from "react"
 import {Link} from "react-router-dom"
 import {Puff} from 'react-loader-spinner'
+import {Message} from './Popup.js'
+import { set } from "date-fns"
 function Bookings(props){
     const [mybookings,setBookings]=useState([])
     const [spinnerLoading,setSpinnerLoading]=useState(true)
@@ -26,11 +28,11 @@ function Bookings(props){
                 setSpinnerLoading(false)
                 // showDatePicker()
             } else {
-    
-                setMessage({"type":"Error","show":true,"message":"Try Refreshing"})
-                setTimeout(()=>{
-                    setMessage({"type":"Error","show":true,"message":"Try Refreshing Again"})
-                },4000)
+                setSpinnerLoading(false)
+                // setMessage({"type":"Error","show":true,"message":"Try Refreshing"})
+                // setTimeout(()=>{
+                //     setMessage({"type":"","show":false,"message":""})
+                // },2000)
             }
         })
         
@@ -54,11 +56,12 @@ function Bookings(props){
             setSpinnerLoading(false)
             // showDatePicker()
         } else {
-
-            setMessage({"type":"Error","show":true,"message":"Try Booking  Again"})
-            setTimeout(()=>{
-                setMessage({"type":"Error","show":true,"message":"Try Booking Again"})
-            },4000)
+            setSpinnerLoading(false)
+            setCursor({"next":data.next_cursor,"previous":data.previous_cursor})
+            // setMessage({"type":"Error","show":true,"message":data.message})
+            // setTimeout(()=>{
+            //     setMessage({"type":"","show":false,"message":""})
+            // },2000)
         }
     })
 
@@ -83,11 +86,12 @@ function Bookings(props){
             setSpinnerLoading(false)
             // showDatePicker()
         } else {
-
-            setMessage({"type":"Error","show":true,"message":"Try Booking  Again"})
+            setSpinnerLoading(false)
+            setMessage({"type":"Error","show":true,"message":"refresh"})
             setTimeout(()=>{
-                setMessage({"type":"Error","show":true,"message":"Try Booking Again"})
-            },4000)
+                setMessage({"type":"","show":false,"message":""})
+            },2000)
+            
         }
     })
 }
@@ -95,7 +99,7 @@ function Bookings(props){
     return(
         <>
             <div className="user-bookings">
-            <h1>Your bookings</h1>
+            
             <Puff
                 type="Puff"
                 color="#00BFFF"
@@ -103,8 +107,10 @@ function Bookings(props){
                 width={100}
                 visible={spinnerLoading}
                 style=""
-            />{ !spinnerLoading?
+            />{ !spinnerLoading&&!mybookings.length==0?
+            
             <div className="bookings-content">
+            <h1>Your bookings</h1>
             <table className="booking-details">
                 <thead>
                 <tr>
@@ -128,14 +134,19 @@ function Bookings(props){
             </table>
             {/* {mybookings.length>5? */}
             <div>
-            <button className="pagination pagination-previous" onClick={previousPage}>previous</button>
-            <button className="pagination pagination-next" onClick={nextPage}>Next</button>
+            <button disabled={cursor.previous===""?true:false} className="pagination pagination-previous" onClick={previousPage}>previous</button>
+            <button disabled={cursor.next===""?true:false}className="pagination pagination-next" onClick={nextPage}>Next</button>
             </div>
             {/**/}
             </div>
-            :null
+            :!spinnerLoading?<div><h1 className="heading-center-empty">You have Zero bookings</h1>
+            <Link to="/" >Go Here to search Locations</Link></div>:null
             
             }
+            <Message messageShow={popMessage.show}>
+                        <h1>{popMessage.type}</h1>
+                        <h2>{popMessage.message}</h2>
+            </Message>
             
             </div>
         </>

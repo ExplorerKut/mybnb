@@ -53,7 +53,7 @@ function Content(){
                 */}
             </div>
             <h3>
-            <Link className="link-more" to="/places/">Click Here to See more Locations</Link>
+            {!spinnerLoading?<Link className="link-more" to="/places/">Click Here to See more Locations</Link>:null}
             </h3>
         </div>
         

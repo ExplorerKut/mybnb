@@ -127,11 +127,11 @@ export function ReviewRating(props){
 
   export function ReviewsList(props){
     const [reviewList,setReviewList]=useState([
-      {"cleanliness":4.9},
-      {"accuracy":4.9},
-      {"location":4.9},
-      {"value":4.9},
-      {"check in":4.9},
+      {"cleanliness":0},
+      {"accuracy":0},
+      {"location":0},
+      {"value":0},
+      {"check in":0},
     ])
     const [reviewInfo,setReviewInfo]=useState({"reviewAverage":0,"reviewNo":0});
     useEffect(async()=>{
@@ -189,7 +189,7 @@ export function ReviewRating(props){
         if(data.status==="success"){
           setReviews([...data.data])
           // props.testList=data.reviewAverage
-          setCursor({"next":data.next_cursor,"previous":data.previous_cursor})
+          setCursor({"next":data.next_cursor,"previous":""})
         }
       })
     },[])
@@ -207,6 +207,7 @@ export function ReviewRating(props){
           // setSpinnerLoading(false)
           // showDatePicker()
       } else {
+        setCursor({"next":data.next_cursor,"previous":data.previous_cursor})
           // setMessage({"type":"Error","show":true,"message":"Try Refreshing"})
           // setTimeout(()=>{
           //     setMessage({"type":"","show":false,"message":""})
@@ -231,7 +232,7 @@ export function ReviewRating(props){
           // setSpinnerLoading(false)
           // showDatePicker()
       } else {
-
+          
           // setMessage({"type":"Error","show":true,"message":"Try refreshing  Again"})
           // setTimeout(()=>{
           //     setMessage({"type":"","show":false,"message":""})
@@ -249,8 +250,8 @@ export function ReviewRating(props){
       ))}
     
     <div>
-            <button className="pagination pagination-previous" onClick={previousPage}>previous</button>
-            <button className="pagination pagination-next" onClick={nextPage}>Next</button>
+            <button disabled={cursor.previous===""?true:false} className="pagination pagination-previous" onClick={previousPage}>previous</button>
+            <button disabled={cursor.next===""||pageReviews.length<5?true:false} className="pagination pagination-next" onClick={nextPage}>Next</button>
     </div>
     </div>
   )

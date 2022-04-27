@@ -87,8 +87,8 @@ function Signup({setLogin}){
                 <br></br>
                 <label htmlFor="role">Role</label>
                 <select name="role" className="signup-role" ref={signup_role}>
-                    <option value="User">User</option>
-                    <option value="Host">Host</option>
+                    <option value="user">User</option>
+                    <option value="host">Host</option>
                 </select>
                 <br></br>
                 <label htmlFor="password">Password</label>

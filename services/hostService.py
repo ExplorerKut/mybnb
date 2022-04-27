@@ -31,7 +31,7 @@ def addProperty(data):
             if not property_already_registered:
                 property_details = Property(
                     name=data.get("property_name"),
-                    host_id=data.get("host_id"),
+                    host_id=host_id,
                     property_type=data.get("property_type"),
                     address=data.get("property_address"),
                     description=data.get("property_description"),
@@ -122,7 +122,9 @@ def registeredProperty(cursor, limit=5):
                 }
             )
         else:
-            return jsonify({"status": "error", "message": "No Property for this user"})
+            return jsonify({"status": "error",
+                            "next_cursor": "",
+                    "previous_cursor": "" if not next_cursor1 else next_cursor1.decode("utf-8"), "message": "No Property for this user"})
 
 
 @jwt_required()

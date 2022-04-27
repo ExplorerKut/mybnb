@@ -24,17 +24,19 @@ def timeConverter(timezone, current_time):
 @places.route("/",defaults={"locationName": ""},methods=["GET"])
 @places.route("/<string:locationName>", methods=["GET"])
 def getPlacesHandler(locationName):
-    return getPlaces(locationName)
+
+    return getPlaces(locationName.lower())
 
 
 @places.route("/<string:locationName>/<int:locationId>", methods=["GET"])
 def getDescriptionHandler(locationName, locationId):
+    # print("fuck it")
     return getDescription(locationName, locationId)
 
 
 @places.route("/<string:locationName>/<int:locationId>/check", methods=["GET"])
 def getLocationAvailabilityHandler(locationName, locationId):
-    return getPlaceAvailability(locationName, locationId)
+    return getPlaceAvailability(locationName.lower(), locationId)
 
 
 @places.route("/<string:locationName>/<int:locationId>/book", methods=["POST"])

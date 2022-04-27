@@ -36,7 +36,7 @@ function Search(){
         if (winScroll > heightToHideFrom) {  
             
              showSearch && setSearch(false);
-             console.log(params)
+            //  console.log(params)
              if(params.get("location")!=undefined){
                 locationValue.current.value=params.get("location");
                 }

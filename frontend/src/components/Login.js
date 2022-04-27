@@ -10,6 +10,7 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
     const [isLogin,setLogin]=useState(true)
     const [spinnerLoading,setSpinnerLoading]=useState(false)
     const [errorMessage,setStatus]=useState({status:true,"message":""})
+    const[login_email,setLoginEmail]=useState("")
     const [user,setUser]=useState()
     // const navigate=useNavigate();
     const {setAuth}=useAuth();
@@ -18,11 +19,12 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
     useEffect(()=>{
         setStatus({status:true,"message":" "})
     },[visible])
-    let login_email=useRef()
+    // let login_email=useRef()
     let login_password=useRef()
     // const setImage=showPass
     let empty=true
     const validator=(e)=>{
+        setLoginEmail(e.target.value)
         empty=false
         let email=e.target.value
         let emailchecker=email.split('@');
@@ -30,6 +32,7 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
             emailchecker=emailchecker[1].split('.')
             if(emailchecker.length>=2&&emailchecker[1].length>=3){
                 setValid(true)
+                
             }
             else{
                 setValid(false)
@@ -42,8 +45,14 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
     const logMeIn=async (e)=>{
         e.preventDefault()
         setSpinnerLoading(true)
-        
-        let sendData={"email":login_email.current.value,"password":login_password.current.value}
+        if(isValid===false&&login_email===""&&login_password.current.value===""){
+            setSpinnerLoading(false)
+            console.log("here")
+            setStatus({"status":false,"message":"Please check credentials"})
+        }
+        else{
+            
+        let sendData={"email":login_email,"password":login_password.current.value}
         // console.log(sendData)
         let response=await fetch("/api/auth/login",{
             method:"POST",
@@ -55,7 +64,7 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
             return response.json()
         })
         if(response[0].status==="success"){
-            const user_email=login_email.current.value
+            const user_email=login_email
             const access_token=response[0].access_token
             // console.log(response[0])
             setSpinnerLoading(false)
@@ -73,8 +82,9 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
             setSpinnerLoading(false)
             setStatus(({status:false,message:response[0].message}))
         }
-        login_email.current.value=""
+        setLoginEmail("")
         login_password.current.value=""
+    }
     }
     return(
         <div>
@@ -96,10 +106,10 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
                 {errorMessage.status?<h3></h3>:<h3>{errorMessage.message}</h3>
                 }
                 <label htmlFor="email">Email</label>
-                <input name="email" type="email" onChange={validator} ref={login_email}></input>
+                <input name="email" value={login_email} type="email" onChange={validator} ></input>
                 
                 {
-                isValid?<span className="valid"></span>:<span className="invalid">invalid email</span>
+                login_email.length>0?isValid?<span className="valid"></span>:<span className="invalid">invalid email</span>:null
                 }
                 
                 
@@ -110,7 +120,7 @@ function Login({role,visible,setRole,setToken,removeToken,token,setVisibility}){
                 
                 <button type="submit" value="login" onClick={logMeIn}>Login</button>
                 <div className="signup-link">
-                <a  onClick={()=>setLogin(false)}>Don't Have An Account SignUp</a>
+                <a  onClick={()=>{setLoginEmail("");login_password.current.value="";setLogin(false)}}>Don't Have An Account SignUp</a>
                 </div>
             </form>:
             <Signup setLogin={setLogin}/>

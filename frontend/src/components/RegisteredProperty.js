@@ -24,11 +24,11 @@ function RegisteredProperty(props){
                 setSpinnerLoading(false)
                 // showDatePicker()
             } else {
-    
-                setMessage({"type":"Error","show":true,"message":"Try Refreshing"})
-                setTimeout(()=>{
-                    setMessage({"type":"Error","show":true,"message":"Try Refreshing Again"})
-                },4000)
+                setSpinnerLoading(false)
+                // setMessage({"type":"Error","show":true,"message":"Try Refreshing"})
+                // setTimeout(()=>{
+                //     setMessage({"type":"Error","show":true,"message":"Try Refreshing Again"})
+                // },4000)
             }
         })
         
@@ -52,11 +52,12 @@ function RegisteredProperty(props){
             setSpinnerLoading(false)
             // showDatePicker()
         } else {
-
-            setMessage({"type":"Error","show":true,"message":"Try Booking  Again"})
-            setTimeout(()=>{
-                setMessage({"type":"Error","show":true,"message":"Try Booking Again"})
-            },4000)
+            setSpinnerLoading(false)
+            setCursor({"next":data.next_cursor,"previous":data.previous_cursor})
+            // setMessage({"type":"Error","show":true,"message":"Try Booking  Again"})
+            // setTimeout(()=>{
+            //     setMessage({"type":"Error","show":true,"message":"Try Booking Again"})
+            // },4000)
         }
     })
 
@@ -93,7 +94,7 @@ function RegisteredProperty(props){
     return(
         <>
             <div className="user-bookings">
-            <h1>Your Properties</h1>
+            
             <Puff
                 type="Puff"
                 color="#00BFFF"
@@ -101,8 +102,10 @@ function RegisteredProperty(props){
                 width={100}
                 visible={spinnerLoading}
                 style=""
-            />{ !spinnerLoading?
+            />{ !spinnerLoading&&!myProperties.length==0?
+            
             <div className="bookings-content">
+            <h1>Your Properties</h1>
             <table className="booking-details">
                 <thead>
                 <tr>
@@ -126,11 +129,13 @@ function RegisteredProperty(props){
                 </tbody>
             </table>
             <div>
-            <button className="pagination pagination-previous" onClick={previousPage}>previous</button>
-            <button className="pagination pagination-next" onClick={nextPage}>Next</button>
+            <button disabled={cursor.previous===""?true:false} className="pagination pagination-previous" onClick={previousPage}>previous</button>
+            <button disabled={cursor.next===""?true:false} className="pagination pagination-next" onClick={nextPage}>Next</button>
             </div>
+
             </div>
-            :null
+            :!spinnerLoading?<div><h1 className="heading-center-empty">You have Zero Properties</h1>
+            <Link to="/" >Go Here to search Locations</Link></div>:null
             
             }
             

@@ -19,7 +19,7 @@ def getAllLocationsHandler():
 
 @location.route("/search", methods=["GET"])
 def getSearchLocation():
-    location = request.args.get("location")
+    location = request.args.get("location").lower()
     check_in = request.args.get("checkin")
     check_out = request.args.get("checkout")
     check_in = None if check_in == "" else float(check_in)

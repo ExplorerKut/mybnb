@@ -16,7 +16,7 @@ def postReviewHandler():
         "cleanliness": request_params.get("ratings").get("cleanliness", 0),
         "location": request_params.get("ratings").get("location", 0),
         "check_in": request_params.get("ratings").get("check_in", 0),
-        "value": request_params.get("ratings").get("value", 0),
+        "value": request_params.get("ratings").get("value1", 0),
         "accuracy": request_params.get("ratings").get("accuracy", 0),
         "review": request_params.get("message", ""),
         "posting_date": request_params.get("posting_date", datetime.now())
